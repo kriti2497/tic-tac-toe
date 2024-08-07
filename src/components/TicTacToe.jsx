@@ -1,8 +1,9 @@
 import useTicTacToe from "../hooks/useTicTacToe";
 
-const TicTacToe = () => {
+// eslint-disable-next-line react/prop-types
+const TicTacToe = ({ boardSize }) => {
   const { board, getDisplayMessage, handleCellClick, resetGame } =
-    useTicTacToe();
+    useTicTacToe(boardSize);
 
   return (
     <div
@@ -16,16 +17,16 @@ const TicTacToe = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          maxWidth: "300px",
+          gridTemplateColumns: `repeat(${boardSize}, 1fr)`,
+          maxWidth: "280px",
         }}
       >
         {board.map((each, index) => (
           <button
             style={{
               border: "1px solid",
-              width: "100px",
-              height: "100px",
+              width: `${280 / boardSize}px`,
+              height: `${280 / boardSize}px`,
               fontSize: "45px",
             }}
             key={index}

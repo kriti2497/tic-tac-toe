@@ -1,22 +1,49 @@
 import { useState } from "react";
 
-const initialBoard = () => Array(9).fill(null);
-
-const useTicTacToe = () => {
+const useTicTacToe = (size) => {
+  const initialBoard = () => Array(size * size).fill(null);
   const [board, setBoard] = useState(initialBoard());
 
   const [xTurn, setXTurn] = useState(true);
 
-  const WINNING_PATTERNS = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  const calculateWinningPatterns = (size) => {
+    let result = [];
+    let arr = Array.from({ length: size * size }, (_, i) => i);
+
+    for (let row = 0; row < size; row++) {
+      let tempRow = [];
+      for (let col = 0; col < size; col++) {
+        tempRow.push(arr[row * size + col]);
+      }
+      result.push(tempRow);
+    }
+
+    for (let col = 0; col < size; col++) {
+      let tempCol = [];
+      for (let row = 0; row < size; row++) {
+        tempCol.push(arr[row * size + col]);
+      }
+      result.push(tempCol);
+    }
+
+    let tempDiag = [];
+    for (let i = 0; i < size; i++) {
+      tempDiag.push(arr[size * i + i]);
+    }
+
+    result.push(tempDiag);
+
+    tempDiag = [];
+    for (let i = 0; i < size; i++) {
+      tempDiag.push(arr[size * i + (size - i - 1)]);
+    }
+
+    result.push(tempDiag);
+
+    return result;
+  };
+
+  const WINNING_PATTERNS = calculateWinningPatterns(size);
 
   const getDisplayMessage = () => {
     const winner = getWinner(board);
